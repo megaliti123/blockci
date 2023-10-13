@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloc de Notas</title>
+</head>
+<body>
+    <h1>Bloc de Notas</h1>
+    <textarea id="textArea" rows="10" cols="30"></textarea><br>
+    <button onclick="guardar()">Guardar</button>
+    <button onclick="abrir()">Abrir</button>
+    <button onclick="nuevo()">Nuevo</button>
+
+    <script>
+        function guardar() {
+            var contenido = document.getElementById('textArea').value;
+            var blob = new Blob([contenido], { type: 'text/plain' });
+            var a = document.createElement('a');
+            a.href = window.URL.createObjectURL(blob);
+            a.download = 'nota.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function abrir() {
+            var input = document.createElement('input');
+            input.type = 'file';
+
+            input.onchange = function () {
+                var file = input.files[0];
+                var reader = new FileReader();
+
+                reader.onload = function () {
+                    document.getElementById('textArea').value = reader.result;
+                };
+
+                reader.readAsText(file);
+            };
+
+            input.click();
+        }
+
+        function nuevo() {
+            document.getElementById('textArea').value = '';
+        }
+    </script>
+</body>
+</html>
